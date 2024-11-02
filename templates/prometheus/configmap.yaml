@@ -27,6 +27,7 @@ data:
 
     rule_files:
       - /etc/prometheus/rules-slo.yml
+      - /etc/prometheus/watchdog-alerts.yml
 
   rules-slo.yml: |
     groups:
@@ -59,3 +60,14 @@ data:
               sum(rate(slo_domain_slo_class_slo_app:slo_events_total{result="fail"}[30m])) by (slo_app, slo_class, slo_domain, slo_type)
               /
               sum(rate(slo_domain_slo_class_slo_app:slo_events_total[30m])) by (slo_app, slo_class, slo_domain, slo_type)
+  watchdog-alerts.yml: |
+    groups:
+      - name: watchdog-alerts
+        rules:
+          - alert: Watchdog
+            expr: vector(1)
+            labels:
+              severity: warning
+            annotations:
+              description: "This is a Watchdog alert. It's always firing to confirm alerting system health."
+              summary: "Watchdog Alert"
