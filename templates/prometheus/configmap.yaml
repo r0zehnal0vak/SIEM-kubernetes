@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  namespace: "{{ .Values.namespace }}"
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s # By default, scrape targets every 15 seconds.
+      external_labels:
+        monitor: 'codelab-monitor'
+
+    # Scrape configuration for Prometheus itself.
+    scrape_configs:
+      - job_name: 'prometheus'
+        scrape_interval: 5s
+        static_configs:
+          - targets: ['localhost:9090']
+
+      - job_name: 'uois'
+        scrape_interval: 5s
+        static_configs:
+          - targets: ['gql_ug:8080']
+          - targets: ['gql_forms:8080']
+          - targets: ['slo_exporter:8080']
+          # - metrics_path: ['/prometheus']
+
+    rule_files:
+      - /etc/prometheus/rules-slo.yml
+
+  rules-slo.yml: |
+    groups:
+      - name: ServiceLevelObjectives
+        rules:
+          - record: service_level_objective:class
+            labels: { slo_class: critical }
+            expr: 99
+          - record: service_level_objective:class
+            labels: { slo_class: high-fast }
+            expr: 95
+          - record: service_level_objective:class
+            labels: { slo_class: high-slow }
+            expr: 95
+          - record: service_level_objective:class
+            labels: { slo_class: low }
+            expr: 90
+          - record: service_level_objective:class
+            labels: { slo_class: no-slo }
+            expr: 0
+      - name: SLO_error_ratio
+        rules:
+          - record: job:slo_errors_per_request:ratio_rate5m
+            expr: |
+              sum(rate(slo_domain_slo_class_slo_app:slo_events_total{result="fail"}[5m])) by (slo_app, slo_class, slo_domain, slo_type)
+              /
+              sum(rate(slo_domain_slo_class_slo_app:slo_events_total[5m])) by (slo_app, slo_class, slo_domain, slo_type)
+          - record: job:slo_errors_per_request:ratio_rate30m
+            expr: |
+              sum(rate(slo_domain_slo_class_slo_app:slo_events_total{result="fail"}[30m])) by (slo_app, slo_class, slo_domain, slo_type)
+              /
+              sum(rate(slo_domain_slo_class_slo_app:slo_events_total[30m])) by (slo_app, slo_class, slo_domain, slo_type)
