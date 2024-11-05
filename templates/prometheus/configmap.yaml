@@ -22,7 +22,7 @@ data:
         static_configs:
           - targets: ['gql_ug:8080']
           - targets: ['gql_forms:8080']
-          - targets: ['slo_exporter:8080']
+          - targets: ['slo-exporter:8080'] # point to k8s service
           # - metrics_path: ['/prometheus']
 
     rule_files:
