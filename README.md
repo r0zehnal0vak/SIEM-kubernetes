@@ -9,6 +9,7 @@ helm install siem .
 ## Ping Snort
 ```
 # get pods ip address
+kubectl get pods -n monitoring
 kubectl describe pod -n monitoring snort-<pods-id>
 
 # ping the pod
