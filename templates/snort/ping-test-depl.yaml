@@ -1,0 +1,15 @@
+# servers for testing the ping on snorts pod
+# kubectl describe pod -n monitoring snort-<pod-id>
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-ping
+  namespace: monitoring
+spec:
+  containers:
+  - name: test-ping
+    image: alpine:latest
+    command: ["sleep", "infinity"]  # Keeps the pod running indefinitely
+    securityContext:
+      runAsUser: 0  # Allows root-level operations

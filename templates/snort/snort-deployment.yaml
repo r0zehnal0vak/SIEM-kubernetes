@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: snort
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: snort
+  template:
+    metadata:
+      labels:
+        app: snort
+    spec:
+      containers:
+        - name: snort
+          image: verlibaa/snort:0.0.2
+          command: ["/bin/sh", "-c", "snort -v -i eth0 -c /usr/local/etc/rules/local.rules"] # ["/bin/sh", "-c", "snort -v -i eth0"] -i lo
+          securityContext:
+            privileged: true
+            runAsUser: 0
+            runAsGroup: 0
+          volumeMounts:
+            - name: snort-config
+              mountPath: /usr/local/etc/snort
+            - name: snort-rules
+              mountPath: /usr/local/etc/rules
+            - name: snort-logs
+              mountPath: /var/log/snort
+      volumes:
+        - name: snort-config
+          configMap:
+            name: snort-config
+        - name: snort-rules
+          configMap:
+            name: snort-rules
+        - name: snort-logs
+          emptyDir: {}
+          securityContext:
+            privileged: true
+            runAsUser: 0
+            runAsGroup: 0
+          volumeMounts:
+            - name: snort-config
+              mountPath: /usr/local/etc/snort
+            - name: snort-rules
+              mountPath: /usr/local/etc/rules
+            - name: snort-logs
+              mountPath: /var/log/snort
+      volumes:
+        - name: snort-config
+          configMap:
+            name: snort-config
+        - name: snort-rules
+          configMap:
+            name: snort-rules
+        - name: snort-logs
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: snort
+  namespace: monitoring
+spec:
+  ports:
+    - port: 8080
+  selector:
+    app: snort
