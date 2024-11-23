@@ -26,8 +26,6 @@ spec:
           volumeMounts:
             - name: dashboards-volume
               mountPath: /var/lib/grafana/dashboards
-            - name: provisioning-volume
-              mountPath: /etc/grafana/provisioning
             - name: provisioning-dsb-volume
               mountPath: /etc/grafana/provisioning/dashboards
             - name: provisioning-ds-volume

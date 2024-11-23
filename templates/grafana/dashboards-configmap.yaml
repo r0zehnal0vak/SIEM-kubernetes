@@ -333,7 +333,7 @@ data:
                     "format": "time_series",
                     "hide": false,
                     "instant": false,
-                    "legendFormat": "{{slo_app}}, {{slo_type}}",
+                    "legendFormat": "{{ .Values.slo_app }}, {{ .Values.slo_type }}",
                     "range": true,
                     "refId": "A"
                     }

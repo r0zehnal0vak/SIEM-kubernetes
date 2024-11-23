@@ -1,1 +1,4 @@
 namespace: monitoring
+
+slo_app: "slo_app"
+slo_type: "slo_type"
