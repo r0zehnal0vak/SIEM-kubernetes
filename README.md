@@ -19,3 +19,14 @@ kubectl exec -it -n monitoring test-ping -- /bin/sh
 # check the logs
 kubectl logs -n monitoring snort-<pods-id>
 ```
+
+## Install with Loki-stack
+```
+helm install siem . -n monitoring --create-namespace
+
+helm upgrade siem . -n monitoring
+
+helm list -n monitoring
+
+helm uninstall siem -n monitoring
+```
