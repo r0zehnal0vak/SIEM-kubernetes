@@ -22,6 +22,10 @@ kubectl logs -n monitoring snort-<pods-id>
 
 ## Install with Loki-stack
 ```
+# This may throw errors, but the installation will proceed.
+# The error occurs due to the --create-namespace flag, which is required for now
+# because Loki uses {{ .Release.namespace }}. ## TODO  ##
+
 helm install siem . -n monitoring --create-namespace
 
 helm upgrade siem . -n monitoring
