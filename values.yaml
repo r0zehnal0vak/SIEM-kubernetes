@@ -2,3 +2,11 @@ namespace: monitoring
 
 slo_app: "slo_app"
 slo_type: "slo_type"
+
+# Used for pinging Snort
+testPingPod:
+  enabled: true
+  name: test-ping
+  image: alpine:latest
+  securityContext:
+    runAsuser: 0 # Allows root-level operations
