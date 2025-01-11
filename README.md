@@ -4,6 +4,12 @@
 # install the helm chart
 cd SIEM-kubernetes
 helm install siem .
+
+# upgrade the helm chart
+helm upgrade siem .
+
+# uninstall the helm chart (default ns)
+helm uninstall siem
 ```
 
 ## Ping Snort
@@ -11,6 +17,8 @@ helm install siem .
 # get pods ip address
 kubectl get pods -n monitoring
 kubectl describe pod -n monitoring snort-<pods-id>
+# Or
+kubectl get pods -n monitoring -o wide
 
 # ping the pod
 kubectl exec -it -n monitoring test-ping -- /bin/sh
@@ -18,19 +26,4 @@ kubectl exec -it -n monitoring test-ping -- /bin/sh
 
 # check the logs
 kubectl logs -n monitoring snort-<pods-id>
-```
-
-## Install with Loki-stack
-```
-# This may throw errors, but the installation will proceed.
-# The error occurs due to the --create-namespace flag, which is required for now
-# because Loki uses {{ .Release.namespace }}. ## TODO  ##
-
-helm install siem . -n monitoring --create-namespace
-
-helm upgrade siem . -n monitoring
-
-helm list -n monitoring
-
-helm uninstall siem -n monitoring
 ```
