@@ -709,7 +709,7 @@ data:
               },
               "editorMode": "code",
               "expr": "count by(priority) (rate({priority=~\".+\"} | logfmt | k8s_ns =~ `$namespace` [$__auto]))",
-              "legendFormat": "{{priority}}",
+              "legendFormat": "{{ .Values.falco.priority }}",
               "queryType": "range",
               "refId": "A"
             }
@@ -780,7 +780,7 @@ data:
               },
               "editorMode": "code",
               "expr": "count by(rule) (rate({priority=~\".+\", rule!=\"Falco internal: metrics snapshot\"} | logfmt | k8s_ns =~ `$namespace` [$__auto]))",
-              "legendFormat": "{{priority}}",
+              "legendFormat": "{{ .Values.falco.priority }}",
               "queryType": "range",
               "refId": "A"
             }
@@ -1071,7 +1071,7 @@ data:
               },
               "editorMode": "builder",
               "expr": "count by(priority) (rate({priority=~\".+\"} | logfmt | k8s_ns =~ `$namespace` [1m]))",
-              "legendFormat": "{{priority}}",
+              "legendFormat": "{{ .Values.falco.priority }}",
               "queryType": "range",
               "refId": "A"
             }
@@ -1173,7 +1173,7 @@ data:
               },
               "editorMode": "builder",
               "expr": "count by(rule) (rate({priority=~\".+\"} | logfmt | k8s_ns =~ `$namespace` [1m]))",
-              "legendFormat": "{{priority}}",
+              "legendFormat": "{{ .Values.falco.priority }}",
               "queryType": "range",
               "refId": "A"
             }

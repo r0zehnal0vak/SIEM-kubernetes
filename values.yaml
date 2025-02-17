@@ -10,3 +10,6 @@ testPingPod:
   image: alpine:latest
   securityContext:
     runAsuser: 0 # Allows root-level operations
+
+falco:
+  priority: debug
