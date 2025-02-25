@@ -41,6 +41,11 @@ data:
           - targets: ['kube-state-metrics.monitoring.svc.cluster.local:8080']
           - targets: ['kube-state-metrics.monitoring.svc.cluster.local:8081']
 
+      - job_name: 'falco'
+        scrape_interval: 15s
+        static_configs:
+          - targets: ['falco-falcosidekick.monitoring.svc.cluster.local:2801']
+
     rule_files:
       - /etc/prometheus/rules-slo.yml
       - /etc/prometheus/watchdog-alerts.yml
