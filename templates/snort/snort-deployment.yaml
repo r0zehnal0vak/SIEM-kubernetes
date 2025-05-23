@@ -16,27 +16,7 @@ spec:
       containers:
         - name: snort
           image: verlibaa/snort:0.0.2
-          command: ["/bin/sh", "-c", "snort -v -i eth0 -c /usr/local/etc/rules/local.rules"] # ["/bin/sh", "-c", "snort -v -i eth0"] -i lo
-          securityContext:
-            privileged: true
-            runAsUser: 0
-            runAsGroup: 0
-          volumeMounts:
-            - name: snort-config
-              mountPath: /usr/local/etc/snort
-            - name: snort-rules
-              mountPath: /usr/local/etc/rules
-            - name: snort-logs
-              mountPath: /var/log/snort
-      volumes:
-        - name: snort-config
-          configMap:
-            name: snort-config
-        - name: snort-rules
-          configMap:
-            name: snort-rules
-        - name: snort-logs
-          emptyDir: {}
+          command: ["/bin/sh", "-c", "snort -v -i eth0 -c /usr/local/etc/rules/local.rules"]
           securityContext:
             privileged: true
             runAsUser: 0
