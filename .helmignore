@@ -21,3 +21,6 @@
 .idea/
 *.tmproj
 .vscode/
+# Additional files
+Dockerfile
+README.md

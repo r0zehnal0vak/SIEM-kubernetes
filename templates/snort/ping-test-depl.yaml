@@ -10,6 +10,6 @@ spec:
     image: {{ .Values.testPingPod.image }}
     command: ["sleep", "infinity"] # Keeps the pod running indefinitely
     securityContext:
-      runAsUser: {{ .Values.testPingPod.securityContext.runAsuser }}
+      runAsUser: {{ .Values.testPingPod.securityContext.runAsUser }}
 {{- else }}
 {{- end }}

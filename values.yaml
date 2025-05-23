@@ -9,7 +9,7 @@ testPingPod:
   name: test-ping
   image: alpine:latest
   securityContext:
-    runAsuser: 0 # Allows root-level operations
+    runAsUser: 0 # Allows root-level operations
 
 falco:
   priority: debug
