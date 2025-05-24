@@ -13,3 +13,6 @@ testPingPod:
 
 falco:
   priority: debug
+  redis:
+    persistence:
+      enabled: false

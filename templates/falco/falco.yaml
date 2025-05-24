@@ -2133,7 +2133,7 @@ spec:
             mountPath: /data
           resources:
             {}
-      
+{{- if .Values.falco.redis.persistence.enabled }}   
   volumeClaimTemplates:
     - metadata:
         name: falco-falcosidekick-ui-redis-data
@@ -2142,3 +2142,4 @@ spec:
         resources:
           requests:
             storage: 1Gi
+{{- end }}
