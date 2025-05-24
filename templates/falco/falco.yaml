@@ -1441,12 +1441,12 @@ data:
         falcoversions: http://localhost:8765/versions
         pluginsDir: /plugins
         refs:
-        - falco-rules:3
+        - falco-rules:latest
         rulesfilesDir: /rulesfiles
       install:
         pluginsDir: /plugins
         refs:
-        - falco-rules:3
+        - falco-rules:latest
         resolveDeps: true
         rulesfilesDir: /rulesfiles
     indexes:
