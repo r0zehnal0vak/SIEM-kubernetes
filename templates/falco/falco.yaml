@@ -13,7 +13,7 @@ metadata:
     app.kubernetes.io/part-of: falcosidekick
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: ui
-  annotations: {}
+  annotations:
 ---
 # Source: falco/charts/falcosidekick/templates/rbac.yaml
 apiVersion: v1
@@ -49,7 +49,7 @@ metadata:
     app.kubernetes.io/part-of: falcosidekick
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: ui
-  annotations: {}
+  annotations:
 type: Opaque
 data:
   FALCOSIDEKICK_UI_USER: "YWRtaW46YWRtaW4="
@@ -68,9 +68,9 @@ metadata:
     app.kubernetes.io/part-of: falcosidekick
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: ui
-  annotations: {}
+  annotations:
 type: Opaque
-data: {}
+data:
 ---
 # Source: falco/charts/falcosidekick/templates/secrets.yaml
 apiVersion: v1
@@ -86,7 +86,7 @@ metadata:
     app.kubernetes.io/part-of: falcosidekick
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: core
-  annotations: {}
+  annotations:
 type: Opaque
 data:
   # Slack Output
@@ -709,7 +709,7 @@ data:
               },
               "editorMode": "code",
               "expr": "count by(priority) (rate({priority=~\".+\"} | logfmt | k8s_ns =~ `$namespace` [$__auto]))",
-              "legendFormat": "{{ .Values.falco.priority }}",
+              "legendFormat":  "{{ .Values.falco.priority }}",
               "queryType": "range",
               "refId": "A"
             }
@@ -780,7 +780,7 @@ data:
               },
               "editorMode": "code",
               "expr": "count by(rule) (rate({priority=~\".+\", rule!=\"Falco internal: metrics snapshot\"} | logfmt | k8s_ns =~ `$namespace` [$__auto]))",
-              "legendFormat": "{{ .Values.falco.priority }}",
+              "legendFormat":  "{{ .Values.falco.priority }}",
               "queryType": "range",
               "refId": "A"
             }
@@ -1071,7 +1071,7 @@ data:
               },
               "editorMode": "builder",
               "expr": "count by(priority) (rate({priority=~\".+\"} | logfmt | k8s_ns =~ `$namespace` [1m]))",
-              "legendFormat": "{{ .Values.falco.priority }}",
+              "legendFormat":  "{{ .Values.falco.priority }}",
               "queryType": "range",
               "refId": "A"
             }
@@ -1173,7 +1173,7 @@ data:
               },
               "editorMode": "builder",
               "expr": "count by(rule) (rate({priority=~\".+\"} | logfmt | k8s_ns =~ `$namespace` [1m]))",
-              "legendFormat": "{{ .Values.falco.priority }}",
+              "legendFormat":  "{{ .Values.falco.priority }}",
               "queryType": "range",
               "refId": "A"
             }
@@ -1360,7 +1360,7 @@ data:
     log_syslog: true
     metrics:
       convert_memory_to_mb: true
-      enabled: true
+      enabled: false
       include_empty_values: false
       interval: 1h
       kernel_event_counters_enabled: true
@@ -1413,7 +1413,7 @@ data:
       enabled: true
       k8s_healthz_endpoint: /healthz
       listen_port: 8765
-      prometheus_metrics_enabled: true
+      prometheus_metrics_enabled: false
       ssl_certificate: /etc/falco/falco.pem
       ssl_enabled: false
       threadiness: 0
@@ -1441,12 +1441,12 @@ data:
         falcoversions: http://localhost:8765/versions
         pluginsDir: /plugins
         refs:
-        - falco-rules:latest
+        - falco-rules:3
         rulesfilesDir: /rulesfiles
       install:
         pluginsDir: /plugins
         refs:
-        - falco-rules:latest
+        - falco-rules:3
         resolveDeps: true
         rulesfilesDir: /rulesfiles
     indexes:
@@ -1467,7 +1467,7 @@ metadata:
     app.kubernetes.io/part-of: falcosidekick
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: ui
-  annotations: {}
+  annotations:
 rules: []
 ---
 # Source: falco/charts/falcosidekick/templates/rbac.yaml
@@ -1484,7 +1484,7 @@ metadata:
     app.kubernetes.io/part-of: falcosidekick
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: core
-  annotations: {}
+  annotations:
 rules:
 - apiGroups:
     - ""
@@ -1592,7 +1592,7 @@ metadata:
     app.kubernetes.io/part-of: falcosidekick
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: ui
-  annotations: {}
+  annotations:
 spec:
   type: ClusterIP
   ports:
@@ -1779,7 +1779,7 @@ spec:
             - artifact
             - follow
             - --log-format=json
-          securityContext: {}
+          securityContext:
           volumeMounts:
             - mountPath: /plugins
               name: plugins-install-dir
@@ -1830,7 +1830,7 @@ spec:
             - artifact
             - install
             - --log-format=json
-          securityContext: {}
+          securityContext:
           volumeMounts:
             - mountPath: /plugins
               name: plugins-install-dir
@@ -1907,7 +1907,7 @@ metadata:
     app.kubernetes.io/part-of: falcosidekick
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: ui
-  annotations: {}
+  annotations:
 spec:
   replicas: 2
   selector:
@@ -1997,7 +1997,7 @@ metadata:
     app.kubernetes.io/part-of: falcosidekick
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: core
-  annotations: {}
+  annotations:
 spec:
   replicas: 2
   selector:
@@ -2128,18 +2128,26 @@ spec:
             timeoutSeconds: 2
             successThreshold: 1
             failureThreshold: 3
-          volumeMounts:
-          - name: falco-falcosidekick-ui-redis-data
-            mountPath: /data
           resources:
             {}
-{{- if .Values.falco.redis.persistence.enabled }}   
-  volumeClaimTemplates:
-    - metadata:
-        name: falco-falcosidekick-ui-redis-data
-      spec:
-        accessModes: [ "ReadWriteOnce" ]
-        resources:
-          requests:
-            storage: 1Gi
-{{- end }}
+---
+# Source: falco/charts/falcosidekick/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "falco-falcosidekick-test-connection"
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/name: falcosidekick
+    helm.sh/chart: falcosidekick-0.9.8
+    app.kubernetes.io/instance: falco
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+    - name: curl
+      image: appropriate/curl
+      command: ['curl']
+      args:  ["-X", "POST", 'falco-falcosidekick:2801/ping']
+  restartPolicy: Never
